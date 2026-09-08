@@ -1,0 +1,25 @@
+.project-resource {
+  display: inline-block;
+  margin: 13px 12px 0 0;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font: 10px var(--mono);
+  letter-spacing: .02em;
+}
+
+.case-resource {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  margin-top: 10px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--line);
+  font: 11px var(--mono);
+}
+
+.project-resource:hover,
+.case-resource:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}

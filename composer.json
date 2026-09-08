@@ -1,0 +1,19 @@
+{
+  "name": "michael-akakposse/portfolio",
+  "description": "Site vitrine et portfolio professionnel de Michael AKAKPOSSE",
+  "type": "project",
+  "license": "proprietary",
+  "require": {
+    "php": ">=8.1",
+    "phpmailer/phpmailer": "^6.9"
+  },
+  "autoload": {
+    "psr-4": {
+      "Portfolio\\": "src/"
+    }
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  }
+}
