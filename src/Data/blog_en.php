@@ -5,6 +5,7 @@ return [
     'cout-site-web-benin' => [
         'title' => 'How much does website development cost in Benin?',
         'description' => 'The main factors that influence website development costs in Benin: website type, features, content, maintenance and SEO.',
+        'focus_keyword' => 'website development cost Benin',
         'category' => 'Web development',
         'date' => '2026-09-18',
         'read_time' => '6 min',
@@ -31,6 +32,7 @@ return [
     'choisir-developpeur-web-cotonou' => [
         'title' => 'How to choose a web developer in Cotonou?',
         'description' => 'Practical criteria for choosing a web developer in Cotonou: understanding the need, portfolio, process, maintenance, security and SEO.',
+        'focus_keyword' => 'web developer Cotonou',
         'category' => 'Guides',
         'date' => '2026-09-18',
         'read_time' => '5 min',
@@ -53,6 +55,7 @@ return [
     'seo-local-benin' => [
         'title' => 'Local SEO in Benin: the basics for being found on Google',
         'description' => 'Learn the basics of local SEO for a business in Benin: service pages, local content, consistent business information and Search Console.',
+        'focus_keyword' => 'local SEO Benin',
         'category' => 'SEO',
         'date' => '2026-09-18',
         'read_time' => '7 min',

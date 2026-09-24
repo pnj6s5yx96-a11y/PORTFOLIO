@@ -36,9 +36,8 @@ function site_meta_defaults(string $title, string $description, string $lang = '
     $place = $locality !== '' ? $locality : 'Cotonou';
     $countryLabel = $country !== '' ? $country : 'Bénin';
     if ($lang === 'en' && $countryLabel === 'Bénin') { $countryLabel = 'Benin'; }
-    $fullTitle = $title === 'Accueil' || $title === 'Home'
-        ? ($lang === 'en' ? 'Freelance Web Developer in ' . $place . ', ' . $countryLabel : 'Développeur web freelance à ' . $place . ', ' . $countryLabel) . ' | ' . $owner
-        : $title . $suffix;
+    $homeTitle = $lang === 'en' ? 'Freelance Web Developer in ' . $place . ', ' . $countryLabel : 'Développeur web freelance à ' . $place . ', ' . $countryLabel;
+    $fullTitle = ($title === 'Accueil' || $title === 'Home') ? $homeTitle . $suffix : (str_ends_with($title, $suffix) ? $title : $title . $suffix);
     return [$fullTitle, $locality, $country];
 }
 
@@ -46,16 +45,27 @@ function site_header(string $title, string $description, string $active = '', ar
 {
     $lang = ($options['lang'] ?? 'fr') === 'en' ? 'en' : 'fr';
     $GLOBALS['site_lang'] = $lang;
+    $seoKey = trim((string) ($options['seo_key'] ?? ''));
+    $seo = $seoKey !== '' ? seo_meta_get($seoKey, $lang) : null;
+    if (is_array($seo)) {
+        $title = trim((string) ($seo['title'] ?? '')) ?: $title;
+        $description = trim((string) ($seo['description'] ?? '')) ?: $description;
+    }
     $noindex = (bool) ($options['noindex'] ?? false) || (string) config('environment') === 'local';
     $image = (string) ($options['image'] ?? configured_hero_image());
     $pageType = (string) ($options['page_type'] ?? 'WebPage');
-    $canonical = (string) ($options['canonical'] ?? site_url(ltrim(current_path(), '/')));
+    $canonical = (string) ($options['canonical'] ?? '');
+    if ($canonical === '' && is_array($seo)) { $canonical = trim((string) ($seo['canonical'] ?? '')); }
+    if ($canonical === '') { $canonical = site_url(ltrim(current_path(), '/')); }
     $alternates = is_array($options['alternates'] ?? null) ? $options['alternates'] : [];
     [$fullTitle, $locality, $country] = site_meta_defaults($title, $description, $lang);
-    $robots = $noindex ? 'noindex,nofollow' : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1';
+    $robots = $noindex ? 'noindex,nofollow' : (is_array($seo) ? (string) ($seo['robots'] ?? 'index,follow') : 'index,follow');
+    if (!$noindex && str_starts_with($robots, 'index')) { $robots .= ',max-image-preview:large,max-snippet:-1,max-video-preview:-1'; }
     $sameAs = array_values(array_filter([config('github_url'), config('linkedin_url')]));
     $imageUrl = site_image_url($image);
-    $keywords = seo_keywords($lang);
+    $focusKeyword = trim((string) ($options['focus_keyword'] ?? (is_array($seo) ? ($seo['focus_keyword'] ?? '') : '')));
+    $focusTerms = preg_split('/[,;|]/u', $focusKeyword) ?: [];
+    $keywords = array_values(array_unique(array_filter(array_merge(seo_keywords($lang), array_map('trim', $focusTerms)))));
     $graph = [
         [
             '@type' => 'WebSite',
@@ -99,6 +109,7 @@ function site_header(string $title, string $description, string $active = '', ar
             'url' => $canonical,
             'name' => $fullTitle,
             'description' => $description,
+            'keywords' => $keywords,
             'inLanguage' => $lang,
             'isPartOf' => ['@id' => site_url('#website')],
             'about' => ['@id' => site_url('#person')],
@@ -126,6 +137,7 @@ function site_header(string $title, string $description, string $active = '', ar
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="<?= e($description) ?>">
+  <?php if (trim((string) config('google_site_verification')) !== ''): ?><meta name="google-site-verification" content="<?= e((string) config('google_site_verification')) ?>"><?php endif; ?>
   <meta name="robots" content="<?= e($robots) ?>">
   <meta name="author" content="<?= e((string) config('owner')) ?>">
   <meta name="keywords" content="<?= e(implode(', ', $keywords)) ?>">

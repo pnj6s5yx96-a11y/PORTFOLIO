@@ -10,5 +10,5 @@ echo "Disallow: /api/\n";
 echo "Disallow: /.git/\n";
 echo "Disallow: /.env\n";
 echo "Disallow: /storage/\n\n";
-echo 'Sitemap: ' . site_url('sitemap.php') . "\n";
+echo 'Sitemap: ' . site_url('sitemap.xml') . "\n";
 if ((string) config('environment') === 'local') { echo "X-Robots-Tag: noindex" . "\n"; }

@@ -42,6 +42,7 @@ return [
     'owner' => (string) env('SITE_OWNER', 'Michael AKAKPOSSE'),
     'email' => (string) env('SITE_EMAIL', 'bonjour@votre-domaine.tld'),
     'whatsapp_number' => preg_replace('/\D+/', '', (string) env('WHATSAPP_NUMBER', '')),
+    'google_site_verification' => (string) env('GOOGLE_SITE_VERIFICATION', ''),
     'github_url' => config_external_url(env('GITHUB_URL', '')),
     'linkedin_url' => config_external_url(env('LINKEDIN_URL', '')),
     'seo_locality' => (string) env('SEO_LOCALITY', 'Cotonou'),

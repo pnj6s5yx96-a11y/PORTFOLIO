@@ -8,5 +8,5 @@ Disallow: /.git/
 Disallow: /.env
 Disallow: /storage/
 
-# Local MAMP: sitemap is available as sitemap.php
-Sitemap: sitemap.php
+Sitemap generated dynamically for the current domain
+Sitemap: /sitemap.xml

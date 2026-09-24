@@ -5,6 +5,7 @@ return [
     'cout-site-web-benin' => [
         'title' => 'Combien coûte la création d’un site web au Bénin ?',
         'description' => 'Les principaux facteurs qui déterminent le prix d’un site web au Bénin : type de site, fonctionnalités, contenu, maintenance et référencement.',
+        'focus_keyword' => 'prix création site web Bénin',
         'category' => 'Création web',
         'date' => '2026-09-18',
         'read_time' => '6 min',
@@ -31,6 +32,7 @@ return [
     'choisir-developpeur-web-cotonou' => [
         'title' => 'Comment choisir un développeur web à Cotonou ?',
         'description' => 'Les critères pratiques pour choisir un développeur web à Cotonou : compréhension du besoin, portfolio, méthode, maintenance, sécurité et SEO.',
+        'focus_keyword' => 'choisir développeur web Cotonou',
         'category' => 'Conseils',
         'date' => '2026-09-18',
         'read_time' => '5 min',
@@ -53,6 +55,7 @@ return [
     'seo-local-benin' => [
         'title' => 'SEO local au Bénin : les bases pour être trouvé sur Google',
         'description' => 'Découvrez les bases du SEO local pour une entreprise au Bénin : pages de services, contenus locaux, cohérence des informations et Search Console.',
+        'focus_keyword' => 'SEO local Bénin',
         'category' => 'Référencement',
         'date' => '2026-09-18',
         'read_time' => '7 min',

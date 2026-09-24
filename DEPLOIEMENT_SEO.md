@@ -3,6 +3,7 @@
 ## 1. Avant l'envoi sur le serveur
 
 1. Copiez `.env.example` en `.env` sur le serveur.
+   Pour la vérification par balise, renseignez GOOGLE_SITE_VERIFICATION avec le jeton fourni par Google Search Console.
 2. Renseignez `APP_URL` avec l'URL HTTPS réelle du site, par exemple `https://www.exemple.com`.
 3. Renseignez la base MySQL et les paramètres SMTP.
 4. Renseignez `SITE_EMAIL`, `WHATSAPP_NUMBER`, `GITHUB_URL` et `LINKEDIN_URL` si nécessaire.
@@ -22,23 +23,9 @@ Importez `PORTFOLIO.sql` ou `site_vitrine_portfolio.sql` selon la base utilisée
 
 ## 4. URLs publiques SEO
 
-Les anciennes URLs PHP sont redirigées vers les URLs propres :
+Les URLs canoniques actuellement publiées sont les URLs PHP du portfolio (`/services.php`, `/projets.php`, `/contact.php`, etc.), plus `/` et `/en/` pour les accueils. Elles sont renseignées de manière cohérente dans les balises canonical, hreflang et le sitemap dynamique.
 
-- `/a-propos/`
-- `/projets/`
-- `/projets/pressing-manager/`
-- `/services/`
-- `/contact/`
-- `/mentions-legales/`
-- `/en/`
-- `/en/about/`
-- `/en/projects/`
-- `/en/projects/pressing-manager/`
-- `/en/services/`
-- `/en/contact/`
-- `/en/legal/`
-
-Le fichier `.htaccess` effectue les redirections et réécrit les URLs propres vers PHP.
+Ne publiez pas deux versions d’une même page avec des contenus différents. Si vous changez ultérieurement le format des URLs, ajoutez des redirections 301 avant de modifier le sitemap.
 
 ## 5. Sitemap et robots
 
@@ -55,13 +42,13 @@ Le sitemap est généré dynamiquement et inclut les pages françaises, anglaise
 2. Vérifiez la propriété.
 3. Soumettez `https://VOTRE-DOMAINE.com/sitemap.xml`.
 4. Inspectez l'accueil, les services, les projets et quelques études de cas.
-5. Vérifiez que le canonical choisi correspond aux URLs propres.
+5. Vérifiez que le canonical choisi correspond à l’URL figurant dans le sitemap.
 6. Vérifiez les variantes linguistiques FR/EN et les rapports de pages indexées/non indexées.
 
 ## 7. Vérifications après mise en ligne
 
 - Le site répond en HTTPS.
-- Les anciennes URLs PHP renvoient une redirection 301 vers les URLs propres.
+- Une seule URL canonique est déclarée pour chaque contenu indexable.
 - `/admin/`, `/api/`, `/espace-client/`, `.env`, `.git/` et `storage/` ne sont pas indexables/accessibles publiquement.
 - Les images principales ont un texte alternatif pertinent.
 - Les pages FR et EN contiennent un contenu réellement traduit.

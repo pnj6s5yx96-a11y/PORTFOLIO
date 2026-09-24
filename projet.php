@@ -16,6 +16,7 @@ $projectSeo = seo_project_get((int)($project['id'] ?? 0), 'fr');
 $projectSeoEn = seo_project_get((int)($project['id'] ?? 0), 'en');
 $seoTitle = $projectSeo['title'] !== '' ? $projectSeo['title'] : $project['title'] . ' — Étude de cas';
 $seoDescription = $projectSeo['description'] !== '' ? $projectSeo['description'] : $project['summary'] . ' Projet du portfolio de Michael AKAKPOSSE, développeur web freelance à Cotonou, Bénin.';
+$seoFocus = $projectSeo['focus_keyword'] !== '' ? $projectSeo['focus_keyword'] : implode(', ', array_filter([$project['title'], $project['label'], ...array_slice($project['tags'], 0, 2)]));
 site_header(
     $seoTitle,
     $seoDescription,

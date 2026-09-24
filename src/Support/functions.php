@@ -206,8 +206,17 @@ function whatsapp_url(string $message = 'Bonjour Michael, je souhaite discuter d
 
 function site_url(string $path = ''): string
 {
-    $base = rtrim((string) config('url'), '/');
-    return $base !== "" ? $base . "/" . ltrim($path, "/") : app_base() . "/" . ltrim($path, "/");
+    $configuredUrl = rtrim(trim((string) config('url')), '/');
+    $requestHost = strtolower((string) preg_replace('/:\\d+$/', '', $_SERVER['HTTP_HOST'] ?? ''));
+    $configuredHost = strtolower((string) parse_url($configuredUrl, PHP_URL_HOST));
+
+    // A stale APP_URL must never prevent CSS, images or navigation from loading.
+    if ($configuredUrl !== '' && ($requestHost === '' || $configuredHost === $requestHost)) {
+        return $configuredUrl . '/' . ltrim($path, '/');
+    }
+
+    $base = rtrim(app_base(), '/');
+    return $base . '/' . ltrim($path, '/');
 }
 
 function project_image_url(?string $image): ?string
@@ -263,7 +272,7 @@ function seo_meta_defaults(string $pageKey, string $lang = 'fr'): array
         'home' => ['Développeur web freelance à Cotonou, Bénin | ' . $owner, 'Développeur web freelance à Cotonou, Bénin. Création de sites vitrines, applications web et solutions e-commerce sur mesure, au Bénin et à l’international.'],
         'about' => ['À propos de ' . $owner . ' | Développeur web à Cotonou', 'Découvrez le parcours, l’approche et les compétences de ' . $owner . ', développeur web freelance à Cotonou, spécialisé dans les sites et applications web.'],
         'services' => ['Création de sites web et applications à Cotonou | ' . $owner, 'Création de sites vitrines, applications web et solutions e-commerce sur mesure pour entreprises, indépendants et projets au Bénin et à l’international.'],
-        'projects' => ['Portfolio développeur web à Cotonou | Réalisations de ' . $owner, 'Découvrez les projets web réalisés par ' . $owner . ' : sites vitrines, applications métier et expériences e-commerce développés avec PHP, MySQL et JavaScript.'],
+        'projects' => ['Portfolio développeur web à Cotonou | Réalisations', 'Découvrez les projets web réalisés par ' . $owner . ' : sites vitrines, applications métier et expériences e-commerce développés avec PHP, MySQL et JavaScript.'],
         'contact' => ['Contact développeur web freelance à Cotonou | ' . $owner, 'Parlez de votre projet web avec ' . $owner . '. Demandez un devis pour un site vitrine, une application web ou une solution e-commerce.'],
         'blog' => ['Conseils développement web et SEO au Bénin | ' . $owner, 'Guides pratiques sur le développement web, le SEO local et la création de sites internet pour les entreprises au Bénin.'],
     ];
@@ -275,7 +284,16 @@ function seo_meta_defaults(string $pageKey, string $lang = 'fr'): array
         'contact' => ['Contact a Freelance Web Developer in Cotonou | ' . $owner, 'Discuss your web project with ' . $owner . '. Request a quote for a business website, web application or e-commerce solution.'],
         'blog' => ['Web Development & SEO Guides in Benin | ' . $owner, 'Practical guides about web development, local SEO and website creation for businesses in Benin.'],
     ];
-    return ($lang === 'en' ? $en : $fr)[$pageKey] ?? ($lang === 'en' ? $en['home'] : $fr['home']);
+    $defaults = ($lang === 'en' ? $en : $fr)[$pageKey] ?? ['', ''];
+    $focus = [
+        'home' => $lang === 'en' ? 'freelance web developer Cotonou Benin' : 'développeur web freelance Cotonou',
+        'about' => $lang === 'en' ? 'freelance web developer Benin' : 'développeur web Cotonou',
+        'services' => $lang === 'en' ? 'website development Cotonou' : 'création site web Cotonou',
+        'projects' => $lang === 'en' ? 'web developer portfolio Benin' : 'portfolio développeur web Bénin',
+        'contact' => $lang === 'en' ? 'website quote Benin' : 'devis site web Cotonou',
+        'blog' => $lang === 'en' ? 'local SEO Benin' : 'SEO local Bénin',
+    ][$pageKey] ?? '';
+    return [$defaults[0], $defaults[1], $focus];
 }
 
 function seo_meta_ensure_table(): bool
@@ -295,10 +313,10 @@ function seo_meta_get(string $key, string $lang = 'fr'): array
     $cacheKey = $key . '|' . $lang;
     if (isset($cache[$cacheKey])) return $cache[$cacheKey];
     $defaults = seo_meta_defaults($key, $lang);
-    $result = ['title'=>$defaults[0], 'description'=>$defaults[1], 'focus_keyword'=>'', 'canonical'=>'', 'robots'=>'index,follow'];
+    $result = ['title'=>$defaults[0], 'description'=>$defaults[1], 'focus_keyword'=>$defaults[2] ?? '', 'canonical'=>'', 'robots'=>'index,follow'];
     $pdo=db();
     if($pdo && seo_meta_ensure_table()) {
-        try { $st=$pdo->prepare('SELECT seo_title,meta_description,focus_keyword,canonical_url,robots FROM seo_meta WHERE page_key=:k AND language_code=:l LIMIT 1'); $st->execute(['k'=>$key,'l'=>$lang]); if($r=$st->fetch()){ $result['title']=trim((string)$r['seo_title'])?:$result['title']; $result['description']=trim((string)$r['meta_description'])?:$result['description']; $result['focus_keyword']=trim((string)$r['focus_keyword']); $result['canonical']=trim((string)$r['canonical_url']); $result['robots']=trim((string)$r['robots'])?:$result['robots']; } } catch(Throwable $e){error_log('[portfolio] SEO metadata read failed: '.$e->getMessage());}
+        try { $st=$pdo->prepare('SELECT seo_title,meta_description,focus_keyword,canonical_url,robots FROM seo_meta WHERE page_key=:k AND language_code=:l LIMIT 1'); $st->execute(['k'=>$key,'l'=>$lang]); if($r=$st->fetch()){ $result['title']=trim((string)$r['seo_title'])?:$result['title']; $result['description']=trim((string)$r['meta_description'])?:$result['description']; $result['focus_keyword']=trim((string)$r['focus_keyword']) ?: $result['focus_keyword']; $result['canonical']=trim((string)$r['canonical_url']); $result['robots']=trim((string)$r['robots'])?:$result['robots']; } } catch(Throwable $e){error_log('[portfolio] SEO metadata read failed: '.$e->getMessage());}
     }
     return $cache[$cacheKey]=$result;
 }

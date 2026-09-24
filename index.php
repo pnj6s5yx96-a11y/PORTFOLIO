@@ -3,7 +3,7 @@ declare(strict_types=1);
 require __DIR__ . '/includes/site.php';
 $projects = portfolio_projects();
 $heroImage = configured_hero_image();
-site_header('Accueil', 'Développeur web freelance à Cotonou, Bénin. Création de sites vitrines, applications web et solutions e-commerce rapides, modernes et optimisées pour les moteurs de recherche.', '/', ['lang' => 'fr', 'seo_key' => 'home', 'alternates' => ['fr' => site_url(), 'en' => site_url('en/')]]);
+site_header('Accueil', 'Développeur web freelance à Cotonou, Bénin. Création de sites vitrines, applications web et solutions e-commerce rapides, modernes et optimisées pour les moteurs de recherche.', '/', ['lang' => 'fr', 'seo_key' => 'home', 'canonical' => site_url(), 'alternates' => ['fr' => site_url(), 'en' => site_url('en/')]]);
 ?>
 <section class="hero">
   <div class="hero-noise" aria-hidden="true"></div>
