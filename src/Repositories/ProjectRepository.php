@@ -13,13 +13,17 @@ function portfolio_projects(): array
     }
 
     $fallback = require __DIR__ . '/../Data/projects.php';
+    foreach ($fallback as &$fallbackProject) {
+        $fallbackProject['year'] = $fallbackProject['year'] ?? null;
+    }
+    unset($fallbackProject);
     $pdo = db();
     if (!$pdo) {
         return $projects = $fallback;
     }
 
     try {
-        $rows = $pdo->query('SELECT id_projet, titre, description, stack_technique, lien_demo, lien_repo, image_url, ordre_affichage FROM projet ORDER BY ordre_affichage ASC, id_projet ASC')->fetchAll();
+        $rows = $pdo->query("SELECT id_projet, titre, description, stack_technique, lien_demo, lien_repo, image_url, ordre_affichage FROM projet WHERE statut_publication = 'publie' ORDER BY CASE WHEN ordre_affichage = 0 THEN 1 ELSE 0 END ASC, ordre_affichage ASC, id_projet ASC")->fetchAll();
         if (!$rows) {
             return $projects = $fallback;
         }
@@ -51,6 +55,7 @@ function portfolio_projects(): array
                 'image_url' => $row['image_url'],
                 'accent' => $template['accent'] ?? 'violet',
                 'featured' => (int) $row['ordre_affichage'] === 1,
+                'year' => null,
             ];
         }, $rows);
     } catch (Throwable $exception) {

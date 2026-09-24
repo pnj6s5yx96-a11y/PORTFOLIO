@@ -46,3 +46,28 @@ Le webhook doit être une passerelle serveur reliée à l’API WhatsApp Busines
 - statistiques pseudonymisées, sans outil publicitaire tiers.
 
 La rétention des statistiques et les sauvegardes MySQL doivent être configurées côté hébergeur selon votre politique de confidentialité.
+
+
+## SEO et mise en production
+
+Le projet inclut maintenant :
+
+- URL publiques propres (`/services/`, `/projets/slug/`, etc.) avec redirection des anciennes URL PHP ;
+- versions françaises et anglaises sous `/` et `/en/` ;
+- `hreflang` FR/EN/x-default, canonical, Open Graph et Twitter Card ;
+- JSON-LD `WebSite`, `Person`, `ProfessionalService`, `WebPage` et `BreadcrumbList` ;
+- sitemap dynamique accessible à `/sitemap.xml` et robots dynamique à `/robots.txt` ;
+- pages de projets traduites côté anglais ;
+- exclusions d’indexation pour `/admin/`, `/api/`, `/espace-client/`, `.env`, `.git/` et `storage/`.
+
+### Déploiement
+
+1. Copier `.env.example` vers `.env`.
+2. Renseigner `APP_URL` avec le domaine HTTPS final.
+3. Renseigner `SITE_EMAIL`, `WHATSAPP_NUMBER`, les identifiants SMTP et la base MySQL.
+4. Conserver `.env` hors Git et ne jamais publier les identifiants.
+5. Importer la base SQL, puis vérifier les pages publiques.
+6. Activer HTTPS sur le domaine.
+7. Dans Google Search Console, ajouter le domaine et soumettre `https://votre-domaine.tld/sitemap.xml`.
+
+Les URL propres nécessitent Apache avec `mod_rewrite` activé.

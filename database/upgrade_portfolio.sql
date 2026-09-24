@@ -32,3 +32,10 @@ WHERE NOT EXISTS (SELECT 1 FROM `projet` WHERE `titre` = 'Artisan Connect');
 INSERT INTO `projet` (`titre`, `description`, `stack_technique`, `ordre_affichage`)
 SELECT 'Market Flow', 'Prototype e-commerce mobile-first pensé pour rendre le catalogue lisible, rassurer les visiteurs et simplifier le passage de la découverte à la commande.', 'PHP natif, MySQL, JavaScript, UX', 3
 WHERE NOT EXISTS (SELECT 1 FROM `projet` WHERE `titre` = 'Market Flow');
+
+
+-- Gestion sûre des projets : brouillon, publication et archivage.
+ALTER TABLE `projet`
+  ADD COLUMN `statut_publication` ENUM('brouillon','publie','archive') NOT NULL DEFAULT 'publie' AFTER `ordre_affichage`,
+  ADD COLUMN `date_creation` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  ADD COLUMN `date_modification` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;

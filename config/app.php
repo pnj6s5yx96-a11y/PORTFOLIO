@@ -27,15 +27,27 @@ function env(string $key, ?string $default = null): ?string
     return $_ENV[$key] ?? getenv($key) ?: $values[$key] ?? $default;
 }
 
+function config_external_url(?string $url): ?string
+{
+    $url = trim((string) $url);
+    if ($url === '') { return null; }
+    $parts = parse_url($url);
+    return is_array($parts) && isset($parts['scheme']) && in_array(strtolower($parts['scheme']), ['http', 'https'], true) ? $url : null;
+}
+
 return [
-    'environment' => env('APP_ENV', 'production'),
+    'environment' => env('APP_ENV', 'local'),
     'url' => rtrim((string) env('APP_URL', ''), '/'),
     'key' => (string) env('APP_KEY', 'replace-this-before-production'),
     'owner' => (string) env('SITE_OWNER', 'Michael AKAKPOSSE'),
     'email' => (string) env('SITE_EMAIL', 'bonjour@votre-domaine.tld'),
     'whatsapp_number' => preg_replace('/\D+/', '', (string) env('WHATSAPP_NUMBER', '')),
-    'seo_locality' => (string) env('SEO_LOCALITY', ''),
-    'seo_country' => (string) env('SEO_COUNTRY', ''),
+    'github_url' => config_external_url(env('GITHUB_URL', '')),
+    'linkedin_url' => config_external_url(env('LINKEDIN_URL', '')),
+    'seo_locality' => (string) env('SEO_LOCALITY', 'Cotonou'),
+    'seo_country' => (string) env('SEO_COUNTRY', 'Bénin'),
+    'hero_image' => (string) env('SITE_HERO_IMAGE', 'assets/images/profile.jpg'),
+    'profile_image' => (string) env('SITE_PROFILE_IMAGE', 'assets/images/profile.jpg'),
     'db' => [
         'host' => (string) env('DB_HOST', '127.0.0.1'),
         'port' => (string) env('DB_PORT', '3306'),

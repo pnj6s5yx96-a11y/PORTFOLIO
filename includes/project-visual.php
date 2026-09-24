@@ -5,25 +5,25 @@ declare(strict_types=1);
 function project_visual(array $project, string $size = 'card'): void
 {
     $accent = $project['accent'] ?? 'violet';
+    $lang = (($GLOBALS['site_lang'] ?? 'fr') === 'en') ? 'en' : 'fr';
+    $capture = $lang === 'en' ? 'Project screenshot' : 'Capture du projet';
+    $addCapture = $lang === 'en' ? 'Add a real screenshot from the administration area.' : 'Ajoutez une vraie capture depuis l’espace administrateur.';
     $imageUrl = trim((string) ($project['image_url'] ?? ''));
-    if ($imageUrl !== ''): ?>
-      <div class="project-visual project-visual--image project-visual--<?= e($size) ?>" role="img" aria-label="Capture du projet <?= e($project['title']) ?>">
-        <img src="<?= e($imageUrl) ?>" alt="Capture du projet <?= e($project['title']) ?>" loading="lazy">
+    $imageSrc = project_image_url($imageUrl);
+    if ($imageSrc !== null): ?>
+      <div class="project-visual project-visual--image project-visual--<?= e($size) ?>" role="img" aria-label="<?= e($capture) ?> <?= e($project['title']) ?>">
+        <img src="<?= e($imageSrc) ?>" alt="<?= e($capture) ?> <?= e($project['title']) ?>" loading="lazy" decoding="async">
         <div class="visual-caption"><span><?= e($project['label']) ?></span><strong><?= e($project['title']) ?></strong></div>
       </div>
       <?php return;
     endif;
     ?>
-    <div class="project-visual project-visual--<?= e($accent) ?> project-visual--<?= e($size) ?>" role="img" aria-label="Aperçu visuel de <?= e($project['title']) ?>">
-      <div class="visual-window">
-        <div class="visual-topbar"><span></span><span></span><span></span><i></i></div>
-        <div class="visual-sidebar"><b></b><b></b><b></b><b></b><b></b></div>
-        <div class="visual-content">
-          <div class="visual-heading"></div>
-          <div class="visual-stats"><i></i><i></i><i></i></div>
-          <div class="visual-chart"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-          <div class="visual-lines"><b></b><b></b><b></b></div>
-        </div>
+    <div class="project-visual project-visual--placeholder project-visual--<?= e($size) ?>" role="img" aria-label="<?= e($capture) ?> <?= e($project['title']) ?>">
+      <div class="capture-placeholder">
+        <span class="capture-placeholder-icon" aria-hidden="true">↗</span>
+        <span class="capture-placeholder-label"><?= e($capture) ?></span>
+        <strong><?= e($project['title']) ?></strong>
+        <small><?= e($addCapture) ?></small>
       </div>
       <div class="visual-caption"><span><?= e($project['label']) ?></span><strong><?= e($project['title']) ?></strong></div>
     </div>

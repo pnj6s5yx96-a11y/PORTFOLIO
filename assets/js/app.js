@@ -127,7 +127,7 @@
       dialog.querySelector('[data-dialog-title]').textContent = project.title;
       dialog.querySelector('[data-dialog-summary]').textContent = project.summary;
       dialog.querySelector('[data-dialog-challenge]').textContent = project.challenge;
-      dialog.querySelector('[data-dialog-link]').href = (window.PORTFOLIO?.projectUrl || "/projet.php") + "?slug=" + encodeURIComponent(project.slug);
+      dialog.querySelector('[data-dialog-link]').href = (window.PORTFOLIO?.projectUrl || "projet.php?slug=") + encodeURIComponent(project.slug);
       const tags = dialog.querySelector('[data-dialog-tags]'); tags.innerHTML = project.tags.map(tag => `<span>${tag}</span>`).join('');
       dialog.querySelector('[data-dialog-visual]').innerHTML = button.closest('[data-project-card]')?.querySelector('.project-visual')?.outerHTML || '';
       dialog.showModal();

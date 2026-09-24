@@ -1,0 +1,6 @@
+<?php
+declare(strict_types=1);
+require __DIR__ . '/../includes/site.php';
+$posts = require __DIR__ . '/../src/Data/blog_en.php';
+site_header('Web development and SEO guides in Benin', 'Practical guides about website development, web applications and local SEO in Benin.', '/en/blog.php', ['lang'=>'en','alternates'=>['fr'=>site_url('blog.php'),'en'=>site_url('en/blog.php')]]);
+?><section class="section"><div class="shell section-intro split-intro"><div><p class="eyebrow"><span></span> Resources</p><h1>Web development, SEO and <em>practical guides.</em></h1></div><p>Practical resources about websites, business applications and search visibility in Benin.</p></div><div class="shell project-feature-grid blog-grid"><?php foreach ($posts as $slug => $post): ?><article class="project-card" data-reveal><div class="project-card-content"><div class="project-card-meta"><span><?= e($post['category']) ?></span><span><?= e($post['read_time']) ?></span></div><h2><?= e($post['title']) ?></h2><p><?= e($post['description']) ?></p><a class="text-link" href="<?= e(site_url('en/article.php?slug='.rawurlencode($slug))) ?>">Read article ↗</a></div></article><?php endforeach; ?></div></section><?php site_footer(); ?>

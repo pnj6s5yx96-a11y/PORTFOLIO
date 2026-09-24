@@ -16,6 +16,7 @@ return [
         'stack' => ['PHP natif', 'MySQL', 'HTML5', 'CSS3', 'JavaScript'],
         'accent' => 'violet',
         'featured' => true,
+        'year' => 2025,
     ],
     [
         'slug' => 'artisan-connect',
@@ -31,6 +32,7 @@ return [
         'stack' => ['HTML5', 'CSS3', 'JavaScript', 'SEO local'],
         'accent' => 'orange',
         'featured' => false,
+        'year' => 2025,
     ],
     [
         'slug' => 'market-flow',

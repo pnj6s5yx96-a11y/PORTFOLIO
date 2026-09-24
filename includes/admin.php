@@ -21,13 +21,15 @@ function admin_header(string $title, string $active = 'overview'): void
 <?php if ($admin): ?>
   <div class="dashboard-layout">
     <aside class="dashboard-sidebar" aria-label="Navigation du tableau de bord">
-      <a class="dashboard-brand" href="<?= e(site_url('admin/')) ?>"><span>AKM</span><b>Studio<br>Michael</b></a>
+      <a class="dashboard-brand" href="<?= e(site_url('admin/')) ?>"><img class="dashboard-profile-avatar" src="<?= e(site_image_url(configured_profile_image())) ?>" alt="" width="42" height="42"><span>AKM</span><b>Dashboard</b></a>
       <p class="dashboard-caption">Espace de pilotage</p>
       <nav class="dashboard-nav">
         <a class="<?= $active === 'overview' ? 'is-active' : '' ?>" href="<?= e(site_url('admin/')) ?>"><i>⌂</i> Vue d’ensemble</a>
         <a class="<?= $active === 'requests' ? 'is-active' : '' ?>" href="<?= e(site_url('admin/demandes.php')) ?>"><i>✉</i> Boîte de réception</a>
         <a class="<?= $active === 'projects' ? 'is-active' : '' ?>" href="<?= e(site_url('admin/projects.php')) ?>"><i>◈</i> Mes projets</a>
         <a class="<?= $active === 'clients' ? 'is-active' : '' ?>" href="<?= e(site_url('admin/clients.php')) ?>"><i>◌</i> Partenaires</a>
+        <a class="<?= $active === 'settings' ? 'is-active' : '' ?>" href="<?= e(site_url('admin/settings.php')) ?>"><i>⚙</i> Paramètres</a>
+        <a class="<?= $active === 'seo' ? 'is-active' : '' ?>" href="<?= e(site_url('admin/seo.php')) ?>"><i>◎</i> SEO</a>
       </nav>
       <div class="dashboard-sidebar-footer">
         <a href="<?= e(site_url()) ?>" target="_blank" rel="noopener">Voir le site ↗</a>
@@ -35,9 +37,9 @@ function admin_header(string $title, string $active = 'overview'): void
       </div>
     </aside>
     <section class="dashboard-stage">
-      <header class="dashboard-topbar"><div><span class="dashboard-kicker">Bonjour <?= e((string) ($_SESSION['admin_name'] ?? '')) ?></span><strong><?= e($title) ?></strong></div><a class="topbar-site-link" href="<?= e(site_url()) ?>" target="_blank" rel="noopener">Ouvrir le site ↗</a></header>
+      <header class="dashboard-topbar"><div class="dashboard-topbar-identity"><img class="dashboard-profile-avatar dashboard-profile-avatar--top" src="<?= e(site_image_url(configured_profile_image())) ?>" alt="" width="38" height="38"><div><span class="dashboard-kicker">Bonjour <?= e((string) ($_SESSION['admin_name'] ?? '')) ?></span><strong><?= e($title) ?></strong></div></div><a class="topbar-site-link" href="<?= e(site_url()) ?>" target="_blank" rel="noopener">Ouvrir le site ↗</a></header>
 <?php else: ?>
-  <header class="auth-topbar"><a class="dashboard-brand" href="<?= e(site_url()) ?>"><span>AKM</span><b>Studio Michael</b></a><a href="<?= e(site_url()) ?>">← Retour au site</a></header>
+  <header class="auth-topbar"><a class="dashboard-brand" href="<?= e(site_url()) ?>"><span>AKM</span><b>Dashboard</b></a><a href="<?= e(site_url()) ?>">← Retour au site</a></header>
 <?php endif; ?>
 <?php
 }

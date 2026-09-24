@@ -1,6 +1,12 @@
 User-agent: *
 Allow: /
+
 Disallow: /admin/
 Disallow: /espace-client/
 Disallow: /api/
-Sitemap: /sitemap.xml
+Disallow: /.git/
+Disallow: /.env
+Disallow: /storage/
+
+# Local MAMP: sitemap is available as sitemap.php
+Sitemap: sitemap.php

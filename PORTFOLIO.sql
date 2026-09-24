@@ -138,7 +138,10 @@ CREATE TABLE `projet` (
   `lien_demo` varchar(255) DEFAULT NULL,
   `lien_repo` varchar(255) DEFAULT NULL,
   `image_url` varchar(255) DEFAULT NULL,
-  `ordre_affichage` int NOT NULL DEFAULT '0'
+  `ordre_affichage` int NOT NULL DEFAULT '0',
+  `statut_publication` enum('brouillon','publie','archive') NOT NULL DEFAULT 'publie',
+  `date_creation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_modification` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -370,12 +373,27 @@ ALTER TABLE `visite`
 -- Projets.
 -- --------------------------------------------------------
 
-INSERT INTO `projet` (`titre`, `description`, `stack_technique`, `lien_demo`, `lien_repo`, `image_url`, `ordre_affichage`) VALUES
-('Pressing Manager', 'Plateforme métier de gestion de pressing avec rôles différenciés propriétaire/gérant. Elle centralise les commandes, les paiements et les statuts afin de rendre le suivi quotidien plus fiable et plus rapide.', 'PHP natif, MySQL, HTML5, CSS3, JavaScript', NULL, NULL, NULL, 1),
-('Artisan Connect', 'Site vitrine orienté conversion conçu pour présenter une expertise artisanale, mettre en valeur les réalisations et faciliter les demandes de devis sur mobile.', 'HTML5, CSS3, JavaScript, SEO local', NULL, NULL, NULL, 2),
-('Market Flow', 'Prototype e-commerce mobile-first pensé pour rendre le catalogue lisible, rassurer les visiteurs et simplifier le passage de la découverte à la commande.', 'PHP natif, MySQL, JavaScript, UX', NULL, NULL, NULL, 3);
+INSERT INTO `projet` (`titre`, `description`, `stack_technique`, `lien_demo`, `lien_repo`, `image_url`, `ordre_affichage`, `statut_publication`) VALUES
+('Poissonnerie Saint-Michel', 'Site e-commerce pour une poissonnerie à Cotonou : catalogue produits, panier, suivi de commande côté client et espace équipe pour gérer les commandes au quotidien.', 'PHP natif, MySQL, HTML5, CSS3, JavaScript', NULL, 'https://github.com/pnj6s5yx96-a11y/poissonneriesaintmichel', 'assets/uploads/projects/85571b30abd64475e7dcba16ad1731e4.png', 1, 'publie'),
+('Pressing Pro', 'Plateforme métier de gestion de pressing avec rôles différenciés propriétaire/gérant. Elle centralise les commandes, les paiements et les statuts afin de rendre le suivi quotidien plus fiable et plus rapide.', 'PHP natif, MySQL, HTML5, CSS3, JavaScript', NULL, 'https://github.com/pnj6s5yx96-a11y/PRESSING_PRO', NULL, 2, 'publie'),
+('Saveurs du Bénin', 'Site vitrine pensé pour mettre en valeur la cuisine et les produits béninois : présentation soignée de l’offre et parcours de contact direct pour transformer la découverte en prise de contact.', 'HTML5, CSS3, JavaScript, SEO local', NULL, 'https://github.com/pnj6s5yx96-a11y/saveursdubenin', NULL, 3, 'publie');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+-- Métadonnées SEO administrables depuis le dashboard.
+CREATE TABLE IF NOT EXISTS `seo_meta` (
+  `id_seo` int NOT NULL AUTO_INCREMENT,
+  `page_key` varchar(100) NOT NULL,
+  `language_code` char(2) NOT NULL,
+  `seo_title` varchar(180) NOT NULL DEFAULT '',
+  `meta_description` varchar(320) NOT NULL DEFAULT '',
+  `focus_keyword` varchar(150) NOT NULL DEFAULT '',
+  `canonical_url` varchar(500) NOT NULL DEFAULT '',
+  `robots` varchar(80) NOT NULL DEFAULT 'index,follow',
+  `date_modification` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_seo`),
+  UNIQUE KEY `uq_seo_page_lang` (`page_key`,`language_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
